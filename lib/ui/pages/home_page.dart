@@ -21,6 +21,10 @@ class _HomePageState extends State<HomePage> with RouteAware {
     return;
   }
 
+  void onStoreTap(StoreModel store) {
+    _bloc.add(HomeOnNavigateToStore(store));
+  }
+
   @override
   void didChangeDependencies() {
     routeObserver.subscribe(this, ModalRoute.of(context)!);
@@ -42,86 +46,107 @@ class _HomePageState extends State<HomePage> with RouteAware {
   @override
   Widget build(BuildContext context) {
     _bloc.add(HomeLoadStores());
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Visito'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: StoresSearchDelegate([
-                  StoreModel(id: 1, name: 'first', address: 'first address'),
-                  StoreModel(id: 2, name: 'second', address: 'second address'),
-                  StoreModel(id: 3, name: 'third', address: 'third address'),
-                  StoreModel(id: 4, name: 'fourth', address: 'fourth address'),
-                ]),
-              );
-            },
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      ),
-      body: BlocConsumer<HomeBloc, HomeState>(
-        bloc: _bloc,
-        listener: (context, state) {
-          if (state is HomeNavigateToStore) {
-            Navigator.pushNamed(
-              context,
-              '/store',
-              arguments: state.store,
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is HomeLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is HomeFailed) {
-            return const Text(
-              'Something went wrong!',
-              style: TextStyle(color: Colors.red),
-            );
-          } else if (state is HomeSucceed) {
-            return RefreshIndicator(
-              onRefresh: _refresh,
-              child: ListView.builder(
-                itemCount: state.stores.length,
-                itemBuilder: (context, index) {
-                  var store = state.stores[index];
-                  return StoreItemWidget(
-                    storeName: store.name!,
-                    storeAddress: store.address!,
-                    onTap: () {
-                      _bloc.add(HomeOnNavigateToStore(store));
-                    },
-                  );
+    return BlocConsumer<HomeBloc, HomeState>(
+      bloc: _bloc,
+      listener: (context, state) {
+        if (state is HomeNavigateToStore) {
+          Navigator.pushNamed(
+            context,
+            '/store',
+            arguments: state.store,
+          );
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Visito'),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  if (state is HomeSucceed) {
+                    showSearch(
+                      context: context,
+                      delegate: StoresSearchDelegate(
+                        stores: state.stores,
+                        onStoreTap: (store) => onStoreTap(store),
+                      ),
+                    );
+                  }
                 },
+                icon: const Icon(Icons.search),
               ),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: const SizedBox(height: 40.0),
-        color: Theme.of(context).colorScheme.background,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.home),
-        onPressed: () {},
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            ],
+          ),
+          body: Builder(
+            builder: (context) {
+              if (state is HomeLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is HomeFailed) {
+                return const Text(
+                  'Something went wrong!',
+                  style: TextStyle(color: Colors.red),
+                );
+              } else if (state is HomeSucceed) {
+                return RefreshIndicator(
+                  onRefresh: _refresh,
+                  child: StoresListView(
+                    stores: state.stores,
+                    onStoreTap: onStoreTap,
+                  ),
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
+          bottomNavigationBar: BottomAppBar(
+            child: const SizedBox(height: 40.0),
+            color: Theme.of(context).colorScheme.background,
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.home),
+            onPressed: () {},
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+        );
+      },
+    );
+  }
+}
+
+class StoresListView extends StatelessWidget {
+  final List<StoreModel> stores;
+  final Function(StoreModel store) onStoreTap;
+
+  const StoresListView(
+      {Key? key, required this.stores, required this.onStoreTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: stores.length,
+      itemBuilder: (context, index) {
+        var store = stores[index];
+        return StoreItemWidget(
+          storeName: store.name!,
+          storeAddress: store.address!,
+          onTap: () => onStoreTap(store),
+        );
+      },
     );
   }
 }
 
 class StoresSearchDelegate extends SearchDelegate {
   final List<StoreModel> stores;
+  final void Function(StoreModel store) onStoreTap;
 
-  StoresSearchDelegate(this.stores);
+  StoresSearchDelegate({required this.stores, required this.onStoreTap});
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -143,34 +168,24 @@ class StoresSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<String> matchQuery = [];
+    List<StoreModel> matchQuery = [];
     for (var store in stores) {
       if (store.name?.toLowerCase().contains(query.toLowerCase()) ?? false) {
-        matchQuery.add(store.name!);
+        matchQuery.add(store);
       }
     }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) => ListTile(
-        title: Text(matchQuery[index]),
-      ),
-    );
+    return StoresListView(stores: matchQuery, onStoreTap: onStoreTap);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
+    List<StoreModel> matchQuery = [];
     for (var store in stores) {
       if (store.name?.toLowerCase().contains(query.toLowerCase()) ?? false) {
-        matchQuery.add(store.name!);
+        matchQuery.add(store);
       }
     }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) => ListTile(
-        title: Text(matchQuery[index]),
-      ),
-    );
+    return StoresListView(stores: matchQuery, onStoreTap: onStoreTap);
   }
 }
 
