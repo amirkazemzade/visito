@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                   listener: (context, state) {
                     if (state is LoginSucceed) {
                       Navigator.pushNamedAndRemoveUntil(
-                          context, '/home', (route) => false);
+                          context, '/navigationBarWrapper', (route) => false);
                     }
                   },
                 ),

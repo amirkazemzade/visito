@@ -15,10 +15,12 @@ class LoginDataProvider {
     return _instance ?? LoginDataProvider._privateConstructor();
   }
 
+  final _dio = Dio();
+
   Future<LoginModel> login(String username, String password) async {
     late LoginModel _login;
     try {
-      Response _response = await Dio().post(
+      Response _response = await _dio.post(
         baseUrl + '/api-auth/login/',
         data: {
           'username': username,

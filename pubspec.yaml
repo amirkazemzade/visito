@@ -38,6 +38,8 @@ dependencies:
   flutter_bloc: ^8.0.1
   flutter_secure_storage: ^5.0.2
   sentry_flutter: ^6.3.0
+  intl: ^0.17.0
+  tuple: ^2.0.0
 
 dev_dependencies:
   flutter_test:

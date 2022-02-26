@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visito_new/bloc/home/home_bloc.dart';
@@ -29,7 +27,6 @@ class _HomePageState extends State<HomePage> with RouteAware {
   void didChangeDependencies() {
     routeObserver.subscribe(this, ModalRoute.of(context)!);
     super.didChangeDependencies();
-    log('didChangeDependencies');
   }
 
   @override
@@ -102,16 +99,6 @@ class _HomePageState extends State<HomePage> with RouteAware {
               }
             },
           ),
-          bottomNavigationBar: BottomAppBar(
-            child: const SizedBox(height: 40.0),
-            color: Theme.of(context).colorScheme.background,
-          ),
-          floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.home),
-            onPressed: () {},
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
         );
       },
     );
