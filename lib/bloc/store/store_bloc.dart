@@ -5,8 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:visito_new/data/models/brand_and_states.dart';
-import 'package:visito_new/data/models/brand_model.dart';
-import 'package:visito_new/data/models/product_model.dart';
+import 'package:visito_new/data/models/brand.dart';
+import 'package:visito_new/data/models/product.dart';
 import 'package:visito_new/data/repository/repository.dart';
 
 part 'store_event.dart';
@@ -26,7 +26,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   ) async {
     emit(StoreLoading());
     try {
-      List<ProductModel> products =
+      List<Product> products =
           await Repository().getProducts(event.storeId);
       List<Future<List<BrandAndStates>>> brandsFutures =
           List.empty(growable: true);
@@ -84,7 +84,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     emit(StoreSucceed(event.products, brands));
   }
 
-  Future<BrandAndStates> sendVisitation(BrandModel brand, int storeId) async {
+  Future<BrandAndStates> sendVisitation(Brand brand, int storeId) async {
     if (brand.face == null && brand.sku == null) {
       return BrandAndStates(brand: brand, state: 'warning');
     } else if (brand.face == null) {

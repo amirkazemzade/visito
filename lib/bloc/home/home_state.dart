@@ -8,7 +8,7 @@ class HomeInitial extends HomeState {}
 class HomeLoading extends HomeState {}
 
 class HomeSucceed extends HomeState {
-  final List<StoreModel> stores;
+  final List<Store> stores;
 
   HomeSucceed(this.stores);
 }
@@ -20,7 +20,7 @@ class HomeFailed extends HomeState {
 }
 
 class HomeNavigateToStore extends HomeState{
-  final StoreModel store;
+  final Store store;
 
   HomeNavigateToStore(this.store);
 }

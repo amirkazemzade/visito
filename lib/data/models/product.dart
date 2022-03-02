@@ -1,10 +1,10 @@
-class ProductModel {
+class Product {
   int? id;
   String? name;
 
-  ProductModel({this.id, this.name});
+  Product({this.id, this.name});
 
-  ProductModel.fromJson(Map<String, dynamic> json) {
+  Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

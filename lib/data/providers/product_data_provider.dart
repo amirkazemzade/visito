@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:visito_new/data/models/product_model.dart';
+import 'package:visito_new/data/models/product.dart';
 
 import 'providers_local_variables.dart';
 
@@ -16,8 +16,8 @@ class ProductDataProvider {
 
   final Dio _dio = Dio();
 
-  Future<List<ProductModel>> getProducts(int storeId, String token) async {
-    late List<ProductModel> products;
+  Future<List<Product>> getProducts(int storeId, String token) async {
+    late List<Product> products;
     try {
       Response response = await _dio.get(
         baseUrl + '/api/v1/product/',
@@ -25,7 +25,7 @@ class ProductDataProvider {
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
       products =
-          (response.data as List).map((d) => ProductModel.fromJson(d)).toList();
+          (response.data as List).map((d) => Product.fromJson(d)).toList();
     } on DioError catch (e) {
       var _message = '';
       switch (e.type) {

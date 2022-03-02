@@ -1,7 +1,7 @@
-import 'package:visito_new/data/models/brand_model.dart';
+import 'package:visito_new/data/models/brand.dart';
 
 class BrandAndStates {
-  BrandModel brand;
+  Brand brand;
   String state;
   bool faceError;
   bool skuError;

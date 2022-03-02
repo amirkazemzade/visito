@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visito_new/bloc/home/home_bloc.dart';
-import 'package:visito_new/data/models/store_model.dart';
+import 'package:visito_new/data/models/store.dart';
 import 'package:visito_new/main.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
     return;
   }
 
-  void onStoreTap(StoreModel store) {
+  void onStoreTap(Store store) {
     _bloc.add(HomeOnNavigateToStore(store));
   }
 
@@ -106,8 +106,8 @@ class _HomePageState extends State<HomePage> with RouteAware {
 }
 
 class StoresListView extends StatelessWidget {
-  final List<StoreModel> stores;
-  final Function(StoreModel store) onStoreTap;
+  final List<Store> stores;
+  final Function(Store store) onStoreTap;
 
   const StoresListView(
       {Key? key, required this.stores, required this.onStoreTap})
@@ -130,8 +130,8 @@ class StoresListView extends StatelessWidget {
 }
 
 class StoresSearchDelegate extends SearchDelegate {
-  final List<StoreModel> stores;
-  final void Function(StoreModel store) onStoreTap;
+  final List<Store> stores;
+  final void Function(Store store) onStoreTap;
 
   StoresSearchDelegate({required this.stores, required this.onStoreTap});
 
@@ -155,7 +155,7 @@ class StoresSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<StoreModel> matchQuery = [];
+    List<Store> matchQuery = [];
     for (var store in stores) {
       if (store.name?.toLowerCase().contains(query.toLowerCase()) ?? false) {
         matchQuery.add(store);
@@ -166,7 +166,7 @@ class StoresSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<StoreModel> matchQuery = [];
+    List<Store> matchQuery = [];
     for (var store in stores) {
       if (store.name?.toLowerCase().contains(query.toLowerCase()) ?? false) {
         matchQuery.add(store);

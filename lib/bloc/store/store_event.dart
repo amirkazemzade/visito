@@ -10,7 +10,7 @@ class StoreLoadEvent extends StoreEvent {
 }
 
 class StoreUpdateEvent extends StoreEvent {
-  final List<ProductModel> products;
+  final List<Product> products;
   final List<List<BrandAndStates>> brands;
 
   StoreUpdateEvent(this.products, this.brands);
@@ -19,7 +19,7 @@ class StoreUpdateEvent extends StoreEvent {
 class StoreSendVisitationEvent extends StoreEvent {
   final int storeId;
   final List<List<BrandAndStates>> brands;
-  final List<ProductModel> products;
+  final List<Product> products;
 
   StoreSendVisitationEvent(this.brands, this.products, this.storeId);
 }

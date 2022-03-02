@@ -6,7 +6,7 @@ abstract class HomeEvent {}
 class HomeLoadStores extends HomeEvent {}
 
 class HomeOnNavigateToStore extends HomeEvent {
-  final StoreModel store;
+  final Store store;
 
   HomeOnNavigateToStore(this.store);
 }

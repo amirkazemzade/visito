@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:visito_new/data/models/login_model.dart';
+import 'package:visito_new/data/models/login.dart';
 import 'package:visito_new/data/repository/repository.dart';
 
 part 'login_event.dart';

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visito_new/bloc/store/store_bloc.dart';
-import 'package:visito_new/data/models/store_model.dart';
+import 'package:visito_new/data/models/store.dart';
 
 class StorePage extends StatefulWidget {
   const StorePage({Key? key}) : super(key: key);
@@ -15,14 +15,14 @@ class StorePage extends StatefulWidget {
 
 class _StorePageState extends State<StorePage> {
   final StoreBloc _bloc = StoreBloc();
-  late final StoreModel _store;
+  late final Store _store;
   int _selected = 0;
   final FocusNode _sendVisitationFocus = FocusNode();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _store = ModalRoute.of(context)!.settings.arguments as StoreModel;
+    _store = ModalRoute.of(context)!.settings.arguments as Store;
     _bloc.add(StoreLoadEvent(_store.id!));
   }
 

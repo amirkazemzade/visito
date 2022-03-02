@@ -1,12 +1,12 @@
-class BrandModel {
+class Brand {
   int? id;
   String? name;
   double? face;
   double? sku;
 
-  BrandModel({this.id, this.name, this.face, this.sku});
+  Brand({this.id, this.name, this.face, this.sku});
 
-  BrandModel.fromJson(Map<String, dynamic> json) {
+  Brand.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['id'];
   }

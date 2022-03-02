@@ -1,11 +1,11 @@
-class StoreModel {
+class Store {
   int? id;
   String? name;
   String? address;
 
-  StoreModel({this.id, this.name, this.address});
+  Store({this.id, this.name, this.address});
 
-  StoreModel.fromJson(Map<String, dynamic> json) {
+  Store.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     address = json['address'];

@@ -8,7 +8,7 @@ class LoginInitial extends LoginState {}
 class LoginInProgress extends LoginState {}
 
 class LoginSucceed extends LoginState {
-  final LoginModel login;
+  final Login login;
 
   LoginSucceed(this.login);
 }
