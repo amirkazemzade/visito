@@ -75,29 +75,29 @@ class _HomePageState extends State<HomePage> with RouteAware {
               ),
             ],
           ),
-          body: Builder(
-            builder: (context) {
-              if (state is HomeLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is HomeFailed) {
-                return const Text(
-                  'Something went wrong!',
-                  style: TextStyle(color: Colors.red),
-                );
-              } else if (state is HomeSucceed) {
-                return RefreshIndicator(
-                  onRefresh: _refresh,
-                  child: StoresListView(
+          body: RefreshIndicator(
+            onRefresh: _refresh,
+            child: Builder(
+              builder: (context) {
+                if (state is HomeLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is HomeFailed) {
+                  return const Text(
+                    'Something went wrong!',
+                    style: TextStyle(color: Colors.red),
+                  );
+                } else if (state is HomeSucceed) {
+                  return StoresListView(
                     stores: state.stores,
                     onStoreTap: onStoreTap,
-                  ),
-                );
-              } else {
-                return Container();
-              }
-            },
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
           ),
         );
       },

@@ -122,7 +122,7 @@ class VisitationDataProvider {
           }
           break;
         case DioErrorType.other:
-          _message = e.error;
+          _message = e.error.toString();
           break;
       }
       throw Exception(_message);
